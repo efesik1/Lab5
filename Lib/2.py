@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv("D:/БГУИР/2 курс/СЯП/test.csv")
+data = pd.read_csv("test.csv")
 data_subset = data.head(1000)
 missing = data_subset.isnull().sum()
 fig, axes = plt.subplots(1, 2, figsize=(12, 6))
@@ -19,7 +19,8 @@ axes[1].set_title("Гистограмма")
 plt.show()
 
 num_columns = data_subset.select_dtypes(include=[np.number]).columns
-data_subset.loc[:, num_columns] = data_subset.loc[:, num_columns].fillna(data_subset.loc[:, num_columns].mean())
+data_subset.loc[:, num_columns] = data_subset.loc[:, num_columns].fillna(data_subset.loc[:, num_columns].mean()).copy()
+
 
 q_low = data_subset["Square"].quantile(0.01)
 q_high = data_subset["Square"].quantile(0.99)
@@ -28,4 +29,4 @@ data_subset = data_subset[(data_subset["Square"] > q_low) & (data_subset["Square
 room_counts = data_subset["Rooms"].value_counts()
 
 pivot_table = pd.pivot_table(data_subset, values="Square", index="DistrictId", columns="Rooms", aggfunc="count", fill_value=0)
-data_subset.to_csv('C:/LOVETS.csv', index=False)
+data_subset.to_csv('D:/LOVETS.csv', index=False)
